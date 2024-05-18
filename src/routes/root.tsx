@@ -1,22 +1,20 @@
-import ReactLogo from '~/assets/react.svg'
+import Sidebar from "../components/Sidebar"
+// import { Outlet } from "react-router-dom"
 
 const Root = () => {
 	return (
-		<div className='fixed  inset-0 grid bg-neutral-800 px-3 pt-2'>
-			<div className='m-auto'>
-				<div className='flex gap-6'>
-					<h1 className='text-8xl font-bold text-neutral-100'>
-						Ready To Start
-					</h1>
-					<img
-						src={ReactLogo}
-						alt='React Logo'
-						className='animate-[spin_4s_linear_infinite]'
-						width={96}
-					/>
-				</div>
+		<>
+		<div className="flex h-screen overflow-hidden bg-zinc-700">
+			
+			<Sidebar />
+			
+			<div className='flex flex-1 flex-col'>
+					<div className='flex-1 overflow-y-auto px-4 py-4'>
+						<p className="text-2xl text-zinc-50">Feed</p>
+					</div>
 			</div>
 		</div>
+		</>
 	)
 }
 
