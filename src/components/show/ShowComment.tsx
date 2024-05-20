@@ -11,7 +11,7 @@ interface HackerNewsComment {
   time: number;
   type: string;
   by: string;
-  text: string | null;
+	text?: string | undefined;
   score: number;
   parent: number | null;
   kids?: HackerNewsComment[];

@@ -104,11 +104,11 @@ const fetchStoriesByType = async (type: 'top' | 'new' | 'best') => {
 							onClick={() => fetchStoriesByType('top')}
 							isLastClicked={lastClickedButton === 'top'}
 						/>
-						{/* <StoryButton
+						<StoryButton
 							text='New'
 							onClick={() => fetchStoriesByType('new')}
 							isLastClicked={lastClickedButton === 'new'}
-						/> */}
+						/>
 						<StoryButton
 							text='Best'
 							onClick={() => fetchStoriesByType('best')}
@@ -147,7 +147,7 @@ const fetchStoriesByType = async (type: 'top' | 'new' | 'best') => {
 				<hr className='border-zinc-700 dark:border-zinc-800 h-[2px]' />
 				<div className='flex gap-2 p-2'>
             <StoryButton text='Top' onClick={() => fetchStoriesByType('top')} isLastClicked={lastClickedButton === 'top'} />
-            {/* <StoryButton text='New' onClick={() => fetchStoriesByType('new')} isLastClicked={lastClickedButton === 'new'} /> */}
+            <StoryButton text='New' onClick={() => fetchStoriesByType('new')} isLastClicked={lastClickedButton === 'new'} />
             <StoryButton text='Best' onClick={() => fetchStoriesByType('best')} isLastClicked={lastClickedButton === 'best'} />
         </div>
 				<hr className='border-zinc-700 dark:border-zinc-800 h-[2px]' />

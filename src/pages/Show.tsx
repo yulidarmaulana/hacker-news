@@ -14,8 +14,8 @@ interface Show {
 	url: string;
 	by: string;
 	time: number;
+	text?: string | undefined;
 }
-
 
 const Show: FC = () => {
 	const [stories, setStories] = useState<Show[]>([])
@@ -88,7 +88,7 @@ const Show: FC = () => {
 											className='text-zinc-100 hover:text-zinc-500'
 										>
 											<Link to={`/show/${show.id}`}>
-												<ShowCard {...show} />
+											< ShowCard  {...show} />
 											</Link>
 										</a>
 									</div>

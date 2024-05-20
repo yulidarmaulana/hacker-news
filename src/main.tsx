@@ -12,6 +12,7 @@ import StoryDetail from './components/story/StoryDetail'
 import AskDetail from './components/ask/AskDetail'
 import JobDetail from './components/job/JobDetail'
 import ShowDetail from './components/show/ShowDetail'
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 
 const router = createBrowserRouter([
 	{
@@ -55,6 +56,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
-		<RouterProvider router={router} />
+		<QueryClientProvider client={new QueryClient()} >
+			<RouterProvider router={router} />
+    </QueryClientProvider>
 	</React.StrictMode>
 )

@@ -57,7 +57,6 @@ const ShowDetail = () => {
 		fetchShow();
 	}, [id]);
 
-
 	if (loading) {
 		return (
 			<div className='flex h-screen overflow-hidden bg-zinc-800'>
@@ -123,6 +122,12 @@ const ShowDetail = () => {
 										{domain}
 									</a>
 								</p>
+
+								<div
+          className={`my-2 text-zinc-300`}
+          dangerouslySetInnerHTML={{ __html: show.text ?? '' }}
+        />
+
 
 								<div className='my-2 flex gap-6'>
 									{show.score && (

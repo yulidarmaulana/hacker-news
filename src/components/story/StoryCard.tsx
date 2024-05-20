@@ -12,9 +12,13 @@ interface StoryCardProps {
   score?: number[]
 }
 
-const StoryCard = ({ title, by, time, url, kids, score }: StoryCardProps) => {
+const StoryCard = ({ title, by, time, url, kids, score}: StoryCardProps) => {
 
-	// Mengambil domain dari URL menggunakan ekspresi reguler
+	if (!url) {
+    return <div>Error: URL is not provided</div>;
+  }
+
+  // Extract domain from URL using regular expression
   const domain = url.replace(/(^\w+:|^)\/\//, '').split('/')[0];
 
 	return (
@@ -39,6 +43,7 @@ const StoryCard = ({ title, by, time, url, kids, score }: StoryCardProps) => {
 				{title}
 			</a>
 				<p className='text-sm text-zinc-400 hover:text-zinc-100'>{domain}</p>
+				
         </div>
       <div className="mb-3 flex gap-6">
         {score && <p className="text-sm text-zinc-400 flex gap-1"><TrendingUp className="w-4 h-4 self-center" /> {score} </p>}

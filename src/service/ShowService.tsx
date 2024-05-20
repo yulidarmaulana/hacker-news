@@ -6,6 +6,7 @@ interface Show {
     url: string;
     by: string;
     time: number;
+	text?: string | undefined;
 }
 
 const CACHE_EXPIRATION_TIME = 600000;
