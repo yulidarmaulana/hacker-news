@@ -16,18 +16,12 @@ interface ShowCardProps {
 
 const ShowCard = ({ title, by, time, url, kids, score}: ShowCardProps) => {
 
-  // const [expanded, setExpanded] = useState<boolean>(false);
+  if (!url) {
+    return <div>Error: URL is not provided</div>;
+  }
 
-  // const toggleExpand = () => {
-  //   setExpanded(!expanded);
-  //   if (onReadMoreClick) {
-  //     onReadMoreClick();
-  //   }
-  // };
-
-  // const shouldShowReadMore = () => {
-  //   return text && text.length >= 1000;
-  // };
+  // Extract domain from URL using regular expression
+  const domain = url.replace(/(^\w+:|^)\/\//, '').split('/')[0];
 
   return (
     <>
@@ -49,18 +43,8 @@ const ShowCard = ({ title, by, time, url, kids, score}: ShowCardProps) => {
           {title}
         </a>
 
-        <p className='text-sm text-zinc-400 hover:text-zinc-100 mb-2'>{url}</p>
+        <p className='text-sm text-zinc-400 hover:text-zinc-100 mb-2'>{domain}</p>
         
-				
-
-        {/* {shouldShowReadMore() && (
-          <button
-            className='text-blue-500 hover:text-blue-50'
-            onClick={toggleExpand}
-          >
-            {expanded ? 'Read less' : 'Read more'}
-          </button>
-        )} */}
       </div>
       <div className="mb-3 flex gap-6">
         {score && <p className="text-sm text-zinc-400 flex gap-1"><TrendingUp className="w-4 h-4 self-center" /> {score} </p>}

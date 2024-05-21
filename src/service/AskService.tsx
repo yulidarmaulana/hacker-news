@@ -1,14 +1,14 @@
 import axios from 'axios';
 
 interface Ask {
-  id: number
+	id: number
 	by: string
 	time: number
 	url: string
-  kids?: number[]
-  score?: number[]
-  title: string
-  text: string
+	kids?: number[]
+	score?: number[]
+	title: string
+	text: string
 }
 
 const CACHE_EXPIRATION_TIME = 600000;

@@ -17,7 +17,7 @@ const Sidebar = () => {
 			<nav className={`flex ${isMobile ? 'flex-row gap-2 overflow-y-auto' : 'flex-col gap-2 overflow-y-visible'} items-center p-4`}>
 				<NavLink
 					to='/'
-					className={`flex w-full items-center justify-start rounded-lg px-4 py-2 text-white hover:bg-zinc-700 ${location.pathname === '/' || location.pathname === `/story/${location.pathname.split('/')[2]}` ? 'bg-zinc-700' : ''}`}
+					className={`flex w-full items-center justify-start rounded-lg px-4 py-2 text-white hover:bg-zinc-700 ${isMobile ? 'justify-center' : ''} ${location.pathname === '/' || location.pathname === `/story/${location.pathname.split('/')[2]}` ? 'bg-zinc-700' : ''}`}
 				>
 					<SquareCode className={`w-5 h-5 ${isMobile ? 'hidden' : ''}`} />
 					<span className='mx-2'>Feed</span>
@@ -25,7 +25,7 @@ const Sidebar = () => {
 
 				<NavLink
 					to='/ask'
-					className={`flex w-full items-center justify-start rounded-lg px-4 py-2 text-white hover:bg-zinc-700 ${location.pathname === '/ask' || location.pathname === `/ask/${location.pathname.split('/')[2]}` ? 'bg-zinc-700' : ''}`}
+					className={`flex w-full items-center justify-start rounded-lg px-4 py-2 text-white hover:bg-zinc-700 ${isMobile ? 'justify-center' : ''} ${location.pathname === '/ask' || location.pathname === `/ask/${location.pathname.split('/')[2]}` ? 'bg-zinc-700' : ''}`}
 				>
 					<CircleHelp className={`w-5 h-5 ${isMobile ? 'hidden' : ''}`} />
 					<span className='mx-2'>Ask</span>
@@ -33,7 +33,7 @@ const Sidebar = () => {
 
 				<NavLink
 					to='/job'
-					className={`flex w-full items-center justify-start rounded-lg px-4 py-2 text-white hover:bg-zinc-700 ${location.pathname === '/job' || location.pathname === `/job/${location.pathname.split('/')[2]}` ? 'bg-zinc-700' : ''}`}
+					className={`flex w-full items-center justify-start rounded-lg px-4 py-2 text-white hover:bg-zinc-700 ${isMobile ? 'justify-center' : ''} ${location.pathname === '/job' || location.pathname === `/job/${location.pathname.split('/')[2]}` ? 'bg-zinc-700' : ''}`}
 				>
 					<BriefcaseBusiness className={`w-5 h-5 ${isMobile ? 'hidden' : ''}`} />
 					<span className='mx-2'>Job</span>
@@ -41,7 +41,7 @@ const Sidebar = () => {
 
 				<NavLink
 					to='/show'
-					className={`flex w-full items-center justify-start rounded-lg px-4 py-2 text-white hover:bg-zinc-700 ${location.pathname === '/show' || location.pathname === `/show/${location.pathname.split('/')[2]}` ? 'bg-zinc-700' : ''}`}
+					className={`flex w-full items-center justify-start rounded-lg px-4 py-2 text-white hover:bg-zinc-700 ${isMobile ? 'justify-center' : ''} ${location.pathname === '/show' || location.pathname === `/show/${location.pathname.split('/')[2]}` ? 'bg-zinc-700' : ''}`}
 				>
 					<Rocket className={`w-5 h-5 ${isMobile ? 'hidden' : ''}`} />
 					<span className='mx-2'>Show</span>

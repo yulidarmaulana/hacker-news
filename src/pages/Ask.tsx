@@ -1,15 +1,15 @@
+import { useInfiniteQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import Sidebar from '../components/Sidebar'
 import Navbar from '../components/Navbar'
 import AskCard from '../components/ask/AskCard'
-import { Outlet } from 'react-router-dom'
 
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
-import { FC, useEffect, useState } from 'react'
+import { FC } from 'react'
 import Skeleton from '../components/ui/Skeleton'
-import { AskService } from '../service/AskService'
 import { Link } from 'react-router-dom'
 
 
@@ -21,31 +21,41 @@ interface Ask {
   kids?: number[]
   score?: number[]
   title: string
-  text: string
+  text: string 
 }
 
 const Ask: FC = () => {
-	const [stories, setStories] = useState<Ask[]>([])
-	const [loading, setLoading] = useState<boolean>(true)
-	const [error, setError] = useState<string | null>(null)
 
-	useEffect(() => {
-		const fetchStories = async () => {
-			try {
-				setLoading(true);
-				const data = await AskService('askstories');
-				setStories(data);
-				setLoading(false);
-			} catch (err) {
-				setError('Failed to fetch stories');
-				setLoading(false);
-			}
-		};
+	const fetchJobs = async ({ pageParam = 0 }) => {
+    const askStories = await axios.get<number[]>(
+      'https://hacker-news.firebaseio.com/v0/askstories.json'
+    );
+    const jobPromises = askStories.data
+      .slice(pageParam, pageParam + 20)
+      .map((askId: number) =>
+        axios.get<Ask>(`https://hacker-news.firebaseio.com/v0/item/${askId}.json`)
+      );
+    const storiesData = await Promise.all(jobPromises);
+    const newData = storiesData.map((response) => response.data);
+    return { data: newData, nextPageParam: pageParam + 20 };
+  };
 
-		fetchStories();
-	}, []);
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
+    queryKey: ['askStories'],
+    queryFn: fetchJobs,
+    initialPageParam: 0, // Tambahkan initialPageParam di sini
+    getNextPageParam: (lastPage) => lastPage.nextPageParam,
+  });
 
-	if (loading) {
+	if (status === 'pending') {
 		return (
 			<div className='flex h-screen overflow-hidden bg-zinc-800'>
 				<Sidebar />
@@ -61,15 +71,14 @@ const Ask: FC = () => {
 		)
 	}
 
-	if (error) {
+	if (status === 'error') {
 		return  (
 			<div className='flex h-screen overflow-hidden'>
 			<Sidebar />
 
 			<div className='flex-1 overflow-y-auto px-4 py-4 pb-16'>
 				<div className='flex h-full items-center justify-center'>
-					<p>Error...</p>
-					
+					<p>Error: {error.message}</p>
 				</div>
 			</div>
 		</div>
@@ -83,26 +92,44 @@ const Ask: FC = () => {
 
 				<div className='flex flex-1 flex-col'>
 					<Navbar />
-					<div className='flex-1 overflow-y-auto px-4 py-4 pb-16 md:pb-2 lg:pb-2'>
+					<div className='flex-1 overflow-y-auto px-4 py-4 pb-24 md:pb-2 lg:pb-2'>
             
 						<ul className='flex flex-col'>
-							{stories.map(ask => (
-								<li key={ask.id} className='bg-zinc-800 p-3'>
-									<div className="">
-									<a href={ask.url} target='_blank' rel='noopener noreferrer' className='text-zinc-100 hover:text-zinc-500'>
-										<Link to={`/ask/${ask.id}`}>
-											<AskCard {...ask} />
-										</Link>
-									</a>
-									</div>
-								</li>
-							))}
+						{data?.pages.map((page, pageIndex) => (
+              <ul key={pageIndex}>
+                {page.data.map((ask: Ask) => (
+                  <li key={ask.id} className='bg-zinc-800 p-3'>
+                    <a
+                      href={ask.url}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className='text-lg text-zinc-50 hover:text-zinc-600'
+                    >
+                      <Link to={`/ask/${ask.id}`}>
+                        <AskCard {...ask} />
+                      </Link>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ))}
 						</ul>
-
-						<Outlet />
+						<div>
+            <button
+              onClick={() => fetchNextPage()}
+              disabled={!hasNextPage || isFetchingNextPage}
+              className='text-md text-zinc-50 hover:text-zinc-400 px-4'
+            >
+              {isFetchingNextPage
+                ? 'Loading...'
+                : hasNextPage
+                ? 'More' 
+                : 'Nothing more to load'}
+            </button>
+            <div>{isFetching && !isFetchingNextPage ? '' : null}</div>
+          </div>
 					</div>
 				</div>
-				
 			</div>
 		</>
 	)

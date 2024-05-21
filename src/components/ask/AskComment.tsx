@@ -6,6 +6,8 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
+import {TrendingUp, MessageSquareMore} from 'lucide-react'
+
 interface HackerNewsComment {
   id: number;
   time: number;
@@ -105,37 +107,48 @@ const AskComment = () => {
   return (
 		<>
 			<div className='flex-1 overflow-y-auto'>
-					<div className='pb-20 md:pb-2 lg:pb-2'>
-						{comments.map(comment => (
-							<div key={comment.id} className=''>
-								<div className='my-2'>
-									<div className='flex items-baseline gap-2'>
-										<p className='mt-2 text-sm text-zinc-400'>
-											{comment.by ?? 'Unknown'}
-										</p>
-										<p className=' text-sm text-zinc-500'>
-											{dayjs.unix(comment.time).fromNow()}
-										</p>
-									</div>
-									<div
-										className={`my-2 text-zinc-300 ${isCommentExpanded(comment.id) ? '' : 'max-h-[100px] overflow-hidden'}`}
-										dangerouslySetInnerHTML={{ __html: comment.text ?? '' }}
-									/>
-									{shouldShowReadMore(comment) && (
-										<button
-											className='text-blue-500 hover:text-blue-50'
-											onClick={() => toggleExpandComment(comment.id)}
-										>
-											{isCommentExpanded(comment.id)
-												? ' less'
-												: ' more'}
-										</button>
-									)}
+				<div className='pb-20 md:pb-2 lg:pb-2'>
+					{comments.map(comment => (
+						<div key={comment.id} className=''>
+							<div className='my-2'>
+								<div className='flex items-baseline gap-2'>
+									<p className='mt-2 text-sm text-zinc-400'>
+										{comment.by ?? 'Unknown'}
+									</p>
+									<p className=' text-sm text-zinc-500'>
+										{dayjs.unix(comment.time).fromNow()}
+									</p>
 								</div>
-                <hr className='border-zinc-700 dark:border-zinc-800 h-[2px]' />
+								<div
+									className={`my-2 text-zinc-300 ${isCommentExpanded(comment.id) ? '' : 'max-h-[100px] overflow-hidden'}`}
+									dangerouslySetInnerHTML={{ __html: comment.text ?? '' }}
+								/>
+								{shouldShowReadMore(comment) && (
+									<button
+										className='text-blue-500 hover:text-blue-50'
+										onClick={() => toggleExpandComment(comment.id)}
+									>
+										{isCommentExpanded(comment.id) ? ' less' : ' more'}
+									</button>
+								)}
 							</div>
-						))}
-					</div>
+							<div className='mb-3 flex gap-6'>
+								{comment.score && (
+									<p className='flex gap-1 text-sm text-zinc-400'>
+										<TrendingUp className='h-4 w-4 self-center' /> {comment.score}{' '}
+									</p>
+								)}
+								{comment.kids && (
+									<p className='flex gap-1 text-sm text-zinc-400 '>
+										<MessageSquareMore className='h-4 w-4 self-center' />{' '}
+										{comment.kids.length ?? 0}{''}
+									</p>
+								)}
+							</div>
+							<hr className='h-[2px] border-zinc-700 dark:border-zinc-800' />
+						</div>
+					))}
+				</div>
 			</div>
 		</>
 	)

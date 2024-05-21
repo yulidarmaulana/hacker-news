@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 const StoryButton: FC<{ text: string, onClick: () => void, isLastClicked: boolean }> = ({ text, onClick, isLastClicked }) => {
     const handleClick = async () => {
-        await onClick(); // Panggil fungsi onClick yang diberikan sebagai prop
+        await onClick(); 
     };
 
     return (

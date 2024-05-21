@@ -105,10 +105,10 @@ const Job: FC = () => {
               {isFetchingNextPage
                 ? 'Loading...'
                 : hasNextPage
-                ? 'Load More'
+                ? 'More' 
                 : 'Nothing more to load'}
             </button>
-            <div>{isFetching && !isFetchingNextPage ? 'Fetching...' : null}</div>
+            <div>{isFetching && !isFetchingNextPage ? '' : null}</div>
           </div>
         </div>
       </div>

@@ -33,29 +33,21 @@ const ShowDetail = () => {
   const domain = show?.url.replace(/(^\w+:|^)\/\//, '').split('/')[0];
 
 	useEffect(() => {
-		const fetchShow = async () => {
+		const fetchStory = async () => {
 			try {
-				const cachedData = localStorage.getItem(`show_${id}`);
-				if (cachedData) {
-					setShow(JSON.parse(cachedData));
-					setLoading(false);
-				} else {
-					const response = await axios.get<Show>(
-						`https://hacker-news.firebaseio.com/v0/item/${id}.json`
-					);
-					const showData = response.data;
-					setShow(showData);
-					localStorage.setItem(`show_${id}`, JSON.stringify(showData));
-					setLoading(false);
-				}
+				const response = await axios.get<Show>(
+					`https://hacker-news.firebaseio.com/v0/item/${id}.json`
+				)
+				setShow(response.data)
+				setLoading(false)
 			} catch (error) {
-				setError('Failed to fetch show');
-				setLoading(false);
+				setError('Failed to fetch story')
+				setLoading(false) 
 			}
-		};
+		}
 
-		fetchShow();
-	}, [id]);
+		fetchStory()
+	}, [id])
 
 	if (loading) {
 		return (
@@ -127,8 +119,6 @@ const ShowDetail = () => {
           className={`my-2 text-zinc-300`}
           dangerouslySetInnerHTML={{ __html: show.text ?? '' }}
         />
-
-
 								<div className='my-2 flex gap-6'>
 									{show.score && (
 										<p className='flex gap-1 text-sm text-zinc-400'>
@@ -143,7 +133,7 @@ const ShowDetail = () => {
 										</p>
 									)}
 								</div>
-								<div className='h-[2px] w-full bg-zinc-700'></div>
+								<div className='h-[2px] bg-zinc-700'></div>
 								<ShowComment />
 							</div>
 						)}

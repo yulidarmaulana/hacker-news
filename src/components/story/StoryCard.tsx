@@ -7,7 +7,7 @@ interface StoryCardProps {
 	title: string
 	by: string
 	time: number
-	url: string
+	url?: string
   kids?: number[]
   score?: number[]
 }

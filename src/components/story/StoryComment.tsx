@@ -132,7 +132,7 @@ const StoryComment = () => {
 												: ' more'}
 										</button>
 									)}
-								</div>
+								</div>                
                 <hr className='border-zinc-700 dark:border-zinc-800 h-[2px]' />
 							</div>
 						))}
