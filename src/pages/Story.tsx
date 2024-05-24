@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
@@ -21,13 +21,47 @@ interface Story {
 
 const Story: FC = () => {
   const apiUrl = 'https://hacker-news.firebaseio.com/v0';
-  const { data, error, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status } = useFetchStories(apiUrl);
-	if (status === 'pending') {
-		return (
+  const [storyType, setStoryType] = useState<'topstories' | 'newstories' | 'beststories'>('topstories');
+  const [lastClickedButton, setLastClickedButton] = useState<string>('');
+
+  const handleStoryTypeChange = (type: 'topstories' | 'newstories' | 'beststories', buttonId: string) => {
+    setStoryType(type);
+    setLastClickedButton(buttonId);
+  };
+
+  // Use the custom hook with apiUrl and storyType
+  const { data, error, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status } = useFetchStories(apiUrl, storyType);
+
+  if (status === 'pending') {
+    return (
 			<div className='flex h-screen overflow-hidden bg-zinc-800'>
 				<Sidebar />
 				<div className='flex flex-1 flex-col'>
 					<Navbar />
+
+					<hr className='h-[2px] border-zinc-700 dark:border-zinc-800' />
+					<div className='flex gap-2 p-2'>
+						{/* Story buttons can be added here */}
+						<button
+							onClick={() => handleStoryTypeChange('topstories', 'top')}
+							className={`text-md px-4 hover:text-zinc-50 ${lastClickedButton === 'top' ? 'text-zinc-50' : 'text-zinc-400'}`}
+						>
+							Top Stories
+						</button>
+						<button
+							onClick={() => handleStoryTypeChange('newstories', 'new')}
+							className={`text-md px-4 hover:text-zinc-50 ${lastClickedButton === 'new' ? 'text-zinc-50' : 'text-zinc-400'}`}
+						>
+							New Stories
+						</button>
+						<button
+							onClick={() => handleStoryTypeChange('beststories', 'best')}
+							className={`text-md px-4 hover:text-zinc-50 ${lastClickedButton === 'best' ? 'text-zinc-50' : 'text-zinc-400'}`}
+						>
+							Best Stories
+						</button>
+					</div>
+					<hr className='h-[2px] border-zinc-700 dark:border-zinc-800' />
 
 					<div className='flex-1 gap-2 overflow-y-auto px-4 py-4 pb-16'>
 						<Skeleton />
@@ -35,22 +69,20 @@ const Story: FC = () => {
 				</div>
 			</div>
 		)
-	}
+  }
 
-	if (status === 'error') {
-		return  (
-			<div className='flex h-screen overflow-hidden'>
-			<Sidebar />
-
-			<div className='flex-1 overflow-y-auto px-4 py-4'>
-				<div className='flex h-full items-center justify-center'>
-				<div>Error: {error?.message}</div>
-					
-				</div>
-			</div>
-		</div>
-    )
-	}
+  if (status === 'error') {
+    return (
+      <div className='flex h-screen overflow-hidden'>
+        <Sidebar />
+        <div className='flex-1 overflow-y-auto px-4 py-4'>
+          <div className='flex h-full items-center justify-center'>
+            <div>Error: {error?.message}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='flex h-screen overflow-hidden bg-zinc-800'>
@@ -60,10 +92,28 @@ const Story: FC = () => {
         <hr className='border-zinc-700 dark:border-zinc-800 h-[2px]' />
         <div className='flex gap-2 p-2'>
           {/* Story buttons can be added here */}
+          <button
+            onClick={() => handleStoryTypeChange('topstories', 'top')}
+            className={`text-md px-4 hover:text-zinc-400 ${lastClickedButton === 'top' ? 'text-zinc-400' : 'text-zinc-50'}`}
+          >
+            Top Stories
+          </button>
+          <button
+            onClick={() => handleStoryTypeChange('newstories', 'new')}
+            className={`text-md px-4 hover:text-zinc-400 ${lastClickedButton === 'new' ? 'text-zinc-400' : 'text-zinc-50'}`}
+          >
+            New Stories
+          </button>
+          <button
+            onClick={() => handleStoryTypeChange('beststories', 'best')}
+            className={`text-md px-4 hover:text-zinc-400 ${lastClickedButton === 'best' ? 'text-zinc-400' : 'text-zinc-50'}`}
+          >
+            Best Stories
+          </button>
         </div>
         <hr className='border-zinc-700 dark:border-zinc-800 h-[2px]' />
 
-        <div className='flex-1 overflow-y-auto px-4 py-4 pb-24'>
+        <div className='flex-1 overflow-y-auto px-4 py-4 pb-lg-4'>
           <ul className='flex flex-col'>
             {data?.pages.map((page, pageIndex) => (
               <ul key={pageIndex}>
@@ -99,5 +149,6 @@ const Story: FC = () => {
     </div>
   );
 };
+
 
 export default Story;

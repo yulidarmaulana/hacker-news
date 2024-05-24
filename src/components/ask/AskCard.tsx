@@ -16,9 +16,6 @@ interface AskCardProps {
 
 const AskCard = ({ title, by, time, url, kids, score}: AskCardProps) => {
 
-	// Mengambil domain dari URL menggunakan ekspresi reguler
-  // const desc = text.replace(/(^\w+:|^)\/\//, '').split('/')[0];
-
 	return (
 		<>
 			<div className='flex items-stretch gap-2'>
@@ -40,7 +37,7 @@ const AskCard = ({ title, by, time, url, kids, score}: AskCardProps) => {
         >
 				{title}
 			</a>
-				{/* <p className='text-sm text-zinc-400' id='desc'>{desc}</p> */}
+				{/* <p className='text-sm text-zinc-400' id='desc' dangerouslySetInnerHTML={{__html: text}}></p> */}
         </div>
       <div className="mb-3 flex gap-6">
         {score && <p className="text-sm text-zinc-400 flex gap-1"><TrendingUp className="w-4 h-4 self-center" /> {score} </p>}

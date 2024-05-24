@@ -17,7 +17,7 @@ interface Ask {
 	title: string
 	type: string
 	url: string
-  text?: string | undefined
+  text: string
 }
 
 const AskDetail = () => {
@@ -27,8 +27,6 @@ const AskDetail = () => {
 	const [error, setError] = useState<string | null>(null)
 
 
-	// Mengambil domain dari URL menggunakan ekspresi reguler
-  // const domain = story?.url.replace(/(^\w+:|^)\/\//, '').split('/')[0];
 
 	useEffect(() => {
 		const fetchStory = async () => {
@@ -79,7 +77,7 @@ const AskDetail = () => {
 		<>
 			<div className='flex h-screen overflow-hidden bg-zinc-800'>
 				<Sidebar />
-				<div className='flex flex-1 flex-col w-full'>
+				<div className='flex w-full flex-1 flex-col'>
 					<Navbar />
 
 					<div className='flex-1 overflow-y-auto px-4 py-4 pb-20 md:pb-2 lg:pb-2'>
@@ -95,6 +93,11 @@ const AskDetail = () => {
 									</p>
 								</div>
 
+								<p
+									className='text-md my-2 text-zinc-300'
+									dangerouslySetInnerHTML={{ __html: story.text }}
+								></p>
+
 								<div className='my-2 flex gap-6'>
 									{story.score && (
 										<p className='flex gap-1 text-sm text-zinc-400'>
@@ -105,7 +108,7 @@ const AskDetail = () => {
 									{story.kids && (
 										<p className='flex gap-1 text-sm text-zinc-400'>
 											<MessageSquareMore className='h-4 w-4 self-center' />{' '}
-											{story.kids.length}{' '}
+											{story.kids.length}{''}
 										</p>
 									)}
 								</div>

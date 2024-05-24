@@ -4,9 +4,9 @@ import axios from 'axios';
 import { StoryTypesInterface } from '../types/story';
 
 
-const useFetchStories = (apiUrl: string) => {
+const useFetchStories = (apiUrl: string, storyType: string) => {
   const fetchStory = async ({ pageParam = 0 }) => {
-    const stories = await axios.get<number[]>(`${apiUrl}/topstories.json`);
+    const stories = await axios.get<number[]>(`${apiUrl}/${storyType}.json`);
     const jobPromises = stories.data
       .slice(pageParam, pageParam + 20)
       .map((showId: number) =>
@@ -26,7 +26,7 @@ const useFetchStories = (apiUrl: string) => {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ['stories', apiUrl],
+    queryKey: ['stories', apiUrl, storyType],
     queryFn: fetchStory,
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.nextPageParam,

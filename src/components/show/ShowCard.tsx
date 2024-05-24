@@ -17,7 +17,7 @@ interface ShowCardProps {
 const ShowCard = ({ title, by, time, url, kids, score}: ShowCardProps) => {
 
   if (!url) {
-    return <div>Error: URL is not provided</div>;
+    return <div className='hidden'></div>;
   }
 
   // Extract domain from URL using regular expression

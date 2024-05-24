@@ -15,7 +15,7 @@ interface StoryCardProps {
 const StoryCard = ({ title, by, time, url, kids, score}: StoryCardProps) => {
 
 	if (!url) {
-    return <div>Error: URL is not provided</div>;
+    return <div className='hidden'></div>;
   }
 
   // Extract domain from URL using regular expression
