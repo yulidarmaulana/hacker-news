@@ -9,7 +9,7 @@ export interface StoryTypesInterface {
   score: number;
   parent_id: number | undefined;
   story_id: number | undefined;
-  kids?: number[];
+  kids?: StoryTypesInterface[];
 }
 
 export interface StoryTypeComment {

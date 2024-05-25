@@ -74,6 +74,58 @@ const AskComment = () => {
         }
     };
 
+    const toggleExpandReplies = async (commentId: number) => {
+        const comment = comments.find(comment => comment.id === commentId);
+        
+        if (comment && comment.kids) {
+            const promises = comment.kids.map(async kidId => {
+                // Ensure kidId is a number
+                const id = typeof kidId === 'object' ? kidId.id : kidId;
+                if (typeof id !== 'number') {
+                    console.error(`Invalid kidId: ${id}`);
+                    return null;
+                }
+                try {
+                    const kidResponse = await axios.get<HackerNewsComment>(
+                        `https://hacker-news.firebaseio.com/v0/item/${id}.json`
+                    );
+                    return kidResponse.data;
+                } catch (error) {
+                    console.error(`Failed to fetch comment with ID ${id}`);
+                    return null;
+                }
+            });
+    
+            const kidsData = await Promise.all(promises);
+    
+            // Update only the comment that is being expanded or collapsed
+            setComments(prevComments => {
+                return prevComments.map(prevComment => {
+                    if (prevComment.id === commentId) {
+                        return {
+                            ...prevComment,
+                            kids: kidsData.filter(kid => kid !== null) as HackerNewsComment[]
+                        };
+                    }
+                    return prevComment;
+                });
+            });
+    
+            // Update expandedComments state based on whether the comment is being expanded or collapsed
+            setExpandedComments(prevExpandedComments => {
+                const isCurrentlyExpanded = isCommentExpanded(commentId);
+                if (isCurrentlyExpanded) {
+                    // If the comment is currently expanded, collapse it
+                    return prevExpandedComments.filter(id => id !== commentId);
+                } else {
+                    // If the comment is not expanded, expand it
+                    return [...prevExpandedComments, commentId];
+                }
+            });
+        }
+    };
+    
+    
     const isCommentExpanded = (commentId: number) => {
         return expandedComments.includes(commentId);
     };
@@ -82,13 +134,45 @@ const AskComment = () => {
         return comment.text && comment.text.length >= 1000;
     };
 
+    const renderCommentActions = (comment: HackerNewsComment) => {
+        return (
+            <div className='mb-3 flex gap-6'>
+                {comment.score && (
+                    <p className='flex gap-1 text-sm text-zinc-400'>
+                        <TrendingUp className='h-4 w-4 self-center' /> {comment.score}{' '}
+                    </p>
+                )}
+                {comment.kids && (
+                    <div className='flex gap-1 text-sm text-zinc-400'>
+                        <MessageSquareMore className='h-4 w-4 self-center' />{' '}
+                        {comment.kids.length ?? 0}{' '}
+                        <button
+                            className='text-blue-500 hover:text-blue-50'
+                            onClick={() => toggleExpandReplies(comment.id)}
+                        >
+                            {isCommentExpanded(comment.id) ? 'Hide' : 'Replies'}
+                        </button>
+                    </div>
+                )}
+            </div>
+        );
+    };
+
+    const getCommentText = (comment: HackerNewsComment) => {
+        if (isCommentExpanded(comment.id) || !shouldShowReadMore(comment)) {
+            return comment.text ?? '';
+        } else {
+            return comment.text?.slice(0, 1000) ?? '';
+        }
+    };
+    
     const renderComments = (comments: HackerNewsComment[]) => {
         return comments.map(comment => (
             <div key={comment.id} className=''>
                 <div className='my-2'>
                     <div className='flex items-baseline gap-2'>
                         <p className='mt-2 text-sm text-zinc-400'>
-                            {comment.by ?? 'unknow'}
+                            {comment.by ?? 'unknown'}
                         </p>
                         <p className='text-sm text-zinc-500'>
                             {dayjs.unix(comment.time).fromNow()}
@@ -96,7 +180,7 @@ const AskComment = () => {
                     </div>
                     <div
                         className={`my-2 text-zinc-300 ${isCommentExpanded(comment.id) ? '' : 'max-h-[100px] overflow-hidden'}`}
-                        dangerouslySetInnerHTML={{ __html: comment.text ?? '' }}
+                        dangerouslySetInnerHTML={{ __html: getCommentText(comment) }}
                     />
                     {shouldShowReadMore(comment) && (
                         <button
@@ -107,30 +191,8 @@ const AskComment = () => {
                         </button>
                     )}
                 </div>
-                <div className='mb-3 flex gap-6'>
-                    {comment.score && (
-                        <p className='flex gap-1 text-sm text-zinc-400'>
-                            <TrendingUp className='h-4 w-4 self-center' />{' '}
-                            {comment.score}{' '}
-                        </p>
-                    )}
-                    {comment.kids && (
-                        <div className='flex gap-1 text-sm text-zinc-400'>
-                            <MessageSquareMore className='h-4 w-4 self-center' />{' '}
-                            {comment.kids.length ?? 0}{' '}
-                            <button
-                                className='text-blue-500 hover:text-blue-50'
-                                onClick={() => toggleExpandComment(comment.id)}
-                            >
-                                {isCommentExpanded(comment.id)
-                                    ? 'Hide Replies'
-                                    : 'Show Replies'}
-                            </button>
-                        </div>
-                    )}
-                </div>
+                {renderCommentActions(comment)}
                 <hr className='h-[2px] border-zinc-700 dark:border-zinc-800' />
-
                 {isCommentExpanded(comment.id) && comment.kids && (
                     <div className='border-l-2 border-zinc-500 pl-8'>
                         {renderComments(comment.kids)}
@@ -168,7 +230,7 @@ const AskComment = () => {
         <>
             <div className='flex-1 overflow-y-auto'>
                 <div className='pb-20 md:pb-2 lg:pb-2'>
-                    {renderComments(comments)}
+                    {renderComments(comments as HackerNewsComment[])}
                 </div>
             </div>
         </>

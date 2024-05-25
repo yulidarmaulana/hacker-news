@@ -117,7 +117,8 @@ const ShowComment = () => {
 											{dayjs.unix(comment.time).fromNow()}
 										</p>
 									</div>
-									<div
+									
+                  <div
 										className={`my-2 text-zinc-300 ${isCommentExpanded(comment.id) ? '' : 'max-h-[100px] overflow-hidden'}`}
 										dangerouslySetInnerHTML={{ __html: comment.text ?? '' }}
 									/>

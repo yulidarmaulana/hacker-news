@@ -16,7 +16,7 @@ const JobCard = ({ title, by, time, url }: JobCardProps) => {
   // }
     
     // Extract domain from URL using regular expression
-    // const domain = url.replace(/(^\w+:|^)\/\//, '').split('/')[0];
+    const domain = url.replace(/(^\w+:|^)\/\//, '').split('/')[0];
 
   return (
     <>
@@ -37,7 +37,7 @@ const JobCard = ({ title, by, time, url }: JobCardProps) => {
         >
           {title}
         </a>
-        {/* <p className='text-sm text-zinc-400 mb-3'>{domain}</p> */}
+        <p className='text-sm text-zinc-400 mb-3'>{domain}</p>
       </div>
       <hr className='border-zinc-700 dark:border-zinc-800 h-[2px]' />
     </>
