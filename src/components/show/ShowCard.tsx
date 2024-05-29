@@ -38,7 +38,7 @@ const ShowCard = ({ title, by, time, url, kids, score}: ShowCardProps) => {
           href={url}
           target='_blank'
           rel='noopener noreferrer'
-          className='text-lg text-zinc-50 hover:text-zinc-600'
+          className='text-lg text-zinc-900 dark:text-zinc-100 hover:text-zinc-600'
         >
           {title}
         </a>
@@ -50,7 +50,7 @@ const ShowCard = ({ title, by, time, url, kids, score}: ShowCardProps) => {
         {score && <p className="text-sm text-zinc-400 flex gap-1"><TrendingUp className="w-4 h-4 self-center" /> {score} </p>}
         {kids && <p className="text-sm text-zinc-400 flex gap-1 "><MessageSquareMore className="w-4 h-4 self-center" />  {kids.length ?? 0} </p>}
       </div>
-      <hr className='border-zinc-700 dark:border-zinc-800 h-[2px]' />
+      <hr className='border-zinc-700 dark:border-zinc-600 h-[2px]' />
     </>
   )
 }

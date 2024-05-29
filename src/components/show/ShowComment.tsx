@@ -80,7 +80,7 @@ const ShowComment = () => {
 
   if (loading) {
     return (
-      <div className='flex h-screen overflow-hidden bg-zinc-800'>
+      <div className='flex h-screen overflow-hidden dark:bg-zinc-800 bg-mystic-300'>
         <div className='flex flex-1 flex-col'>
           <div className='flex-1 gap-2 overflow-y-auto px-4 py-4'>
             <Skeleton />
@@ -119,7 +119,7 @@ const ShowComment = () => {
 									</div>
 									
                   <div
-										className={`my-2 text-zinc-300 ${isCommentExpanded(comment.id) ? '' : 'max-h-[100px] overflow-hidden'}`}
+										className={`my-2 text-zinc-700 dark:text-zinc-100 ${isCommentExpanded(comment.id) ? '' : 'max-h-[100px] overflow-hidden'}`}
 										dangerouslySetInnerHTML={{ __html: comment.text ?? '' }}
 									/>
 									{shouldShowReadMore(comment) && (
@@ -133,7 +133,7 @@ const ShowComment = () => {
 										</button>
 									)}
 								</div>
-                <hr className='border-zinc-700 dark:border-zinc-800 h-[2px]' />
+                <hr className='border-zinc-700 dark:border-zinc-600 h-[2px]' />
 							</div>
 						))}
 					</div>

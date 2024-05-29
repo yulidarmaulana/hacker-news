@@ -147,7 +147,7 @@ const AskComment = () => {
                         <MessageSquareMore className='h-4 w-4 self-center' />{' '}
                         {comment.kids.length ?? 0}{' '}
                         <button
-                            className='text-blue-500 hover:text-blue-50'
+                            className='text-blue-500 hover:text-blue-700'
                             onClick={() => toggleExpandReplies(comment.id)}
                         >
                             {isCommentExpanded(comment.id) ? 'Hide' : 'Replies'}
@@ -165,46 +165,53 @@ const AskComment = () => {
             return comment.text?.slice(0, 1000) ?? '';
         }
     };
-    
-    const renderComments = (comments: HackerNewsComment[]) => {
-        return comments.map(comment => (
-            <div key={comment.id} className=''>
-                <div className='my-2'>
-                    <div className='flex items-baseline gap-2'>
-                        <p className='mt-2 text-sm text-zinc-400'>
-                            {comment.by ?? 'unknown'}
-                        </p>
-                        <p className='text-sm text-zinc-500'>
-                            {dayjs.unix(comment.time).fromNow()}
-                        </p>
-                    </div>
-                    <div
-                        className={`my-2 text-zinc-300 ${isCommentExpanded(comment.id) ? '' : 'max-h-[100px] overflow-hidden'}`}
-                        dangerouslySetInnerHTML={{ __html: getCommentText(comment) }}
-                    />
-                    {shouldShowReadMore(comment) && (
-                        <button
-                            className='text-blue-500 hover:text-blue-50'
-                            onClick={() => toggleExpandComment(comment.id)}
-                        >
-                            {isCommentExpanded(comment.id) ? ' less' : ' more'}
-                        </button>
-                    )}
+    const renderComment = (comment: HackerNewsComment) => (
+        <div key={comment.id} className=''>
+            <div className='my-2'>
+                <div className='flex items-baseline gap-2'>
+                    <p className='mt-2 text-sm text-zinc-400'>
+                        {comment.by ?? 'unknown'}
+                    </p>
+                    <p className='text-sm text-zinc-500'>
+                        {dayjs.unix(comment.time).fromNow()}
+                    </p>
                 </div>
-                {renderCommentActions(comment)}
-                <hr className='h-[2px] border-zinc-700 dark:border-zinc-800' />
-                {isCommentExpanded(comment.id) && comment.kids && (
-                    <div className='border-l-2 border-zinc-500 pl-8'>
-                        {renderComments(comment.kids)}
-                    </div>
+                <div
+                    className={`my-2 text-zinc-700 dark:text-zinc-100 ${isCommentExpanded(comment.id) ? '' : 'max-h-[100px] overflow-hidden'}`}
+                    dangerouslySetInnerHTML={{ __html: getCommentText(comment) }}
+                />
+                {shouldShowReadMore(comment) && (
+                    <button
+                        className='text-blue-500 hover:text-blue-700'
+                        onClick={() => toggleExpandComment(comment.id)}
+                    >
+                        {isCommentExpanded(comment.id) ? ' less' : ' more'}
+                    </button>
                 )}
             </div>
-        ));
-    };
+            {renderCommentActions(comment)}
+    
+            <hr className='h-[2px] border-zinc-700 dark:border-zinc-600' />
+            
+            {isCommentExpanded(comment.id) && comment.kids && (
+                <div className='border-l-2 border-zinc-500 pl-8'>
+                    {/* Panggil renderComments untuk menangani komentar-komentar anak */}
+                    {renderComments(comment.kids as HackerNewsComment[])}
+                </div>
+            )}
+        </div>
+    );
+    
+    const renderComments = (comments: HackerNewsComment[]) => (
+        <>
+            {comments.map(comment => renderComment(comment))}
+        </>
+    );    
+    
 
     if (loading) {
         return (
-            <div className='flex h-screen overflow-hidden bg-zinc-800'>
+            <div className='flex h-screen overflow-hidden dark:bg-zinc-800 bg-mystic-300'>
                 <div className='flex flex-1 flex-col'>
                     <div className='flex-1 gap-2 overflow-y-auto px-4 py-4'>
                         <Skeleton />

@@ -57,7 +57,7 @@ const Ask: FC = () => {
 
 	if (status === 'pending') {
 		return (
-			<div className='flex h-screen overflow-hidden bg-zinc-800'>
+			<div className='flex h-screen overflow-hidden dark:bg-zinc-800 bg-mystic-300'>
 				<Sidebar />
 
 				<div className='flex flex-1 flex-col'>
@@ -87,7 +87,7 @@ const Ask: FC = () => {
 
 	return (
 		<>
-			<div className='flex h-screen overflow-hidden bg-zinc-800'>
+			<div className='flex h-screen overflow-hidden dark:bg-zinc-800 bg-mystic-300'>
 				<Sidebar />
 
 				<div className='flex flex-1 flex-col'>
@@ -98,7 +98,7 @@ const Ask: FC = () => {
 						{data?.pages.map((page, pageIndex) => (
               <ul key={pageIndex}>
                 {page.data.map((ask: Ask) => (
-                  <li key={ask.id} className='bg-zinc-800 p-3'>
+                  <li key={ask.id} className='dark:bg-zinc-800 bg-mystic-300 p-3'>
                     <a
                       href={ask.url}
                       target='_blank'
@@ -118,7 +118,7 @@ const Ask: FC = () => {
             <button
               onClick={() => fetchNextPage()}
               disabled={!hasNextPage || isFetchingNextPage}
-              className='text-md text-zinc-50 hover:text-zinc-400 px-4'
+              className='text-md text-zinc-900 hover:text-zinc-600 dark:text-zinc-50 dark:hover:text-zinc-400 px-4'
             >
               {isFetchingNextPage
                 ? 'Loading...'

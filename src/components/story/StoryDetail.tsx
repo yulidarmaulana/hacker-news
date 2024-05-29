@@ -50,7 +50,7 @@ const StoryDetail = () => {
 
 	if (loading) {
 		return (
-			<div className='flex h-screen overflow-hidden bg-zinc-800'>
+			<div className='flex h-screen overflow-hidden dark:bg-zinc-800 bg-mystic-300'>
 				<Sidebar />
 				<div className='flex flex-1 flex-col'>
 					<Navbar />
@@ -77,7 +77,7 @@ const StoryDetail = () => {
 
 	return (
 		<>
-			<div className='flex h-screen overflow-hidden bg-zinc-800'>
+			<div className='flex h-screen overflow-hidden dark:bg-zinc-800 bg-mystic-300'>
 				<Sidebar />
 				<div className='flex flex-1 flex-col w-full'>
 					<Navbar />
@@ -85,7 +85,7 @@ const StoryDetail = () => {
 					<div className='flex-1 overflow-y-auto px-4'>
 						{story && (
 							<div className='p-3'>
-								<h2 className='my-2 text-xl font-medium text-zinc-100'>
+								<h2 className='my-2 text-xl font-medium text-zinc-900 dark:text-zinc-100 hover:text-zinc-600'>
 									{story.title}
 								</h2>
 								<div className='flex gap-3'>
@@ -123,7 +123,7 @@ const StoryDetail = () => {
 								<div className='h-[2px] bg-zinc-700'>
 									<StoryComment />
 								</div>
-								<hr className='h-[2px] border-zinc-700 dark:border-zinc-800' />
+								<hr className='border-mystic-200 dark:border-zinc-600' />
 							</div>
 						)}
 					</div>

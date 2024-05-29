@@ -24,7 +24,7 @@ const StoryCard = ({ title, by, time, url, kids, score}: StoryCardProps) => {
 	return (
 		<>
 			<div className='flex items-stretch gap-2'>
-				<p className='text-sm text-zinc-400'>{by}</p>
+				<p className='text-sm text-zinc-900 dark:text-zinc-400'>{by}</p>
         
         <div className="flex">
 				<p className='self-center text-sm text-zinc-500'>
@@ -38,18 +38,18 @@ const StoryCard = ({ title, by, time, url, kids, score}: StoryCardProps) => {
 				href={url}
 				target='_blank'
 				rel='noopener noreferrer'
-				className='text-lg text-zinc-50 hover:text-zinc-600'
+				className='text-lg text-zinc-900 dark:text-zinc-100 hover:text-zinc-600'
         >
 				{title}
 			</a>
-				<p className='text-sm text-zinc-400 hover:text-zinc-100'>{domain}</p>
+				<p className='text-sm text-zinc-400 hover:text-zinc-900'>{domain}</p>
 				
         </div>
       <div className="mb-3 flex gap-6">
         {score && <p className="text-sm text-zinc-400 flex gap-1"><TrendingUp className="w-4 h-4 self-center" /> {score} </p>}
         {kids && <p className="text-sm text-zinc-400 flex gap-1 "><MessageSquareMore className="w-4 h-4 self-center" />  {kids.length ?? 0} </p>}
       </div>
-      <hr className='border-zinc-700 dark:border-zinc-800 h-[2px]' />
+      <hr className='border-zinc-700 dark:border-zinc-600 h-[2px]' />
 		</>
 	)
 }

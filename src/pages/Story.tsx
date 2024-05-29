@@ -34,12 +34,12 @@ const Story: FC = () => {
 
   if (status === 'pending') {
     return (
-			<div className='flex h-screen overflow-hidden bg-zinc-800'>
+			<div className='flex h-screen overflow-hidden dark:bg-zinc-800 bg-mystic-300'>
 				<Sidebar />
 				<div className='flex flex-1 flex-col'>
 					<Navbar />
 
-					<hr className='h-[2px] border-zinc-700 dark:border-zinc-800' />
+					<hr className='h-[2px] border-mystic-100 dark:border-zinc-600' />
 					<div className='flex gap-2 p-2'>
 						{/* Story buttons can be added here */}
 						<button
@@ -61,7 +61,7 @@ const Story: FC = () => {
 							Best Stories
 						</button>
 					</div>
-					<hr className='h-[2px] border-zinc-700 dark:border-zinc-800' />
+					<hr className='h-[2px] border-mystic-100 dark:border-zinc-600' />
 
 					<div className='flex-1 gap-2 overflow-y-auto px-4 py-4 pb-16'>
 						<Skeleton />
@@ -85,45 +85,45 @@ const Story: FC = () => {
   }
 
   return (
-    <div className='flex h-screen overflow-hidden bg-zinc-800'>
+    <div className='flex h-screen overflow-hidden dark:bg-zinc-800 bg-mystic-300'>
       <Sidebar />
       <div className='flex flex-1 flex-col'>
         <Navbar />
-        <hr className='border-zinc-700 dark:border-zinc-800 h-[2px]' />
+        <hr className='border-mystic-300 dark:border-zinc-800 h-[2px]' />
         <div className='flex gap-2 p-2'>
           {/* Story buttons can be added here */}
           <button
             onClick={() => handleStoryTypeChange('topstories', 'top')}
-            className={`text-md px-4 hover:text-zinc-400 ${lastClickedButton === 'top' ? 'text-zinc-400' : 'text-zinc-50'}`}
+            className={`text-md px-4 text-zinc-900 dark:text-mystic-100 hover:text-zinc-400 ${lastClickedButton === 'top' ? 'text-zinc-400' : 'text-zinc-50'}`}
           >
             Top Stories
           </button>
           <button
             onClick={() => handleStoryTypeChange('newstories', 'new')}
-            className={`text-md px-4 hover:text-zinc-400 ${lastClickedButton === 'new' ? 'text-zinc-400' : 'text-zinc-50'}`}
+            className={`text-md px-4 text-zinc-900 dark:text-mystic-100 hover:text-zinc-400 ${lastClickedButton === 'new' ? 'text-zinc-400' : 'text-zinc-50'}`}
           >
             New Stories
           </button>
           <button
             onClick={() => handleStoryTypeChange('beststories', 'best')}
-            className={`text-md px-4 hover:text-zinc-400 ${lastClickedButton === 'best' ? 'text-zinc-400' : 'text-zinc-50'}`}
+            className={`text-md px-4 text-zinc-900 dark:text-mystic-100 hover:text-zinc-400 ${lastClickedButton === 'best' ? 'text-zinc-400' : 'text-zinc-50'}`}
           >
             Best Stories
           </button>
         </div>
-        <hr className='border-zinc-700 dark:border-zinc-800 h-[2px]' />
+        <hr className='border-mystic-500 dark:border-zinc-600 h-[2px]' />
 
-        <div className='flex-1 overflow-y-auto px-4 py-4 pb-lg-4'>
+        <div className='flex-1 overflow-y-auto p-4 pb-20 md:pb-2 lg:pb-2'>
           <ul className='flex flex-col'>
             {data?.pages.map((page, pageIndex) => (
               <ul key={pageIndex}>
                 {page.data.map((story: Story) => (
-                  <li key={story.id} className='bg-zinc-800 p-3'>
+                  <li key={story.id} className='dark:bg-zinc-800  p-3'>
                     <a
                       href={story.url}
                       target='_blank'
                       rel='noopener noreferrer'
-                      className='text-lg text-zinc-50 hover:text-zinc-600'
+                      className='text-lg text-zinc-900 dark:text-zinc-50 hover:text-zinc-600'
                     >
                       <Link to={`/story/${story.id}`}>
                         <StoryCard key={story.id} {...story} />
@@ -138,7 +138,7 @@ const Story: FC = () => {
             <button
               onClick={() => fetchNextPage()}
               disabled={!hasNextPage || isFetchingNextPage}
-              className={`text-md px-4 text-zinc-50 hover:text-zinc-400`}
+              className={`text-md px-4 pb-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-50 dark:hover:text-zinc-400`}
             >
               {isFetchingNextPage ? 'Loading...' : hasNextPage ? 'More' : 'Nothing more to load'}
             </button>

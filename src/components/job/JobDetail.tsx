@@ -30,7 +30,7 @@ const StoryDetail = () => {
 
 
 	// Mengambil domain dari URL menggunakan ekspresi reguler
-  const domain = story?.url.replace(/(^\w+:|^)\/\//, '').split('/')[0];
+  // const domain = story?.url.replace(/(^\w+:|^)\/\//, '').split('/')[0];
 
 	useEffect(() => {
 		const fetchStory = async () => {
@@ -52,7 +52,7 @@ const StoryDetail = () => {
 
 	if (loading) {
 		return (
-			<div className='flex h-screen overflow-hidden bg-zinc-800'>
+			<div className='flex h-screen overflow-hidden dark:bg-zinc-800 bg-mystic-300'>
 				<Sidebar />
 				<div className='flex flex-1 flex-col'>
 					<Navbar />
@@ -79,7 +79,7 @@ const StoryDetail = () => {
 
 	return (
 		<>
-			<div className='flex h-screen overflow-hidden bg-zinc-800'>
+			<div className='flex h-screen overflow-hidden dark:bg-zinc-800 bg-mystic-300'>
 				<Sidebar />
 				<div className='flex flex-1 flex-col'>
 					<Navbar />
@@ -89,7 +89,7 @@ const StoryDetail = () => {
 							<div className='px-3'>
 
 								<a href={story.url} target='_blank'>
-										<h2 className='text-xl  font-medium text-zinc-100 hover:text-zinc-500'>
+										<h2 className='text-xl  font-medium text-zinc-900 dark:text-zinc-100 hover:text-zinc-500'>
 											{story.title}
 										</h2>										
 								</a>
@@ -112,7 +112,7 @@ const StoryDetail = () => {
 										rel='noopener noreferrer'
 										className='text-sm text-zinc-400 hover:text-zinc-50'
 									>
-										{domain}
+										{story.url}
 									</a>
 								</p>
 

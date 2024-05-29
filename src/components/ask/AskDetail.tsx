@@ -48,7 +48,7 @@ const AskDetail = () => {
 
 	if (loading) {
 		return (
-			<div className='flex h-screen overflow-hidden bg-zinc-800'>
+			<div className='flex h-screen overflow-hidden dark:bg-zinc-800 bg-mystic-300'>
 				<Sidebar />
 				<div className='flex flex-1 flex-col'>
 					<Navbar />
@@ -75,7 +75,7 @@ const AskDetail = () => {
 
 	return (
 		<>
-			<div className='flex h-screen overflow-hidden bg-zinc-800'>
+			<div className='flex h-screen overflow-hidden dark:bg-zinc-800 bg-mystic-300'>
 				<Sidebar />
 				<div className='flex w-full flex-1 flex-col'>
 					<Navbar />
@@ -83,7 +83,7 @@ const AskDetail = () => {
 					<div className='flex-1 overflow-y-auto px-4 py-4 pb-20 md:pb-2 lg:pb-2'>
 						{story && (
 							<div className='p-3'>
-								<h2 className='my-2 text-xl font-medium text-zinc-100'>
+								<h2 className='my-2 text-xl font-medium text-zinc-900 dark:text-zinc-100'>
 									{story.title}
 								</h2>
 								<div className='flex gap-3'>
@@ -94,7 +94,7 @@ const AskDetail = () => {
 								</div>
 
 								<p
-									className='text-md my-2 text-zinc-300'
+									className='text-md my-2 text-zinc-700 dark:text-zinc-100'
 									dangerouslySetInnerHTML={{ __html: story.text }}
 								></p>
 
