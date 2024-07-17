@@ -16,7 +16,7 @@ interface HackerNewsComment {
     text: string | null;
     score: number;
     parent: number | null;
-    kids?: HackerNewsComment[];
+    kids?: number[];
     deleted?: true;
 }
 
@@ -76,56 +76,49 @@ const AskComment = () => {
 
     const toggleExpandReplies = async (commentId: number) => {
         const comment = comments.find(comment => comment.id === commentId);
-        
+
         if (comment && comment.kids) {
             const promises = comment.kids.map(async kidId => {
-                // Ensure kidId is a number
-                const id = typeof kidId === 'object' ? kidId.id : kidId;
-                if (typeof id !== 'number') {
-                    console.error(`Invalid kidId: ${id}`);
-                    return null;
-                }
                 try {
                     const kidResponse = await axios.get<HackerNewsComment>(
-                        `https://hacker-news.firebaseio.com/v0/item/${id}.json`
+                        `https://hacker-news.firebaseio.com/v0/item/${kidId}.json`
                     );
                     return kidResponse.data;
                 } catch (error) {
-                    console.error(`Failed to fetch comment with ID ${id}`);
+                    console.error(`Failed to fetch comment with ID ${kidId}`);
                     return null;
                 }
             });
-    
+
             const kidsData = await Promise.all(promises);
-    
-            // Update only the comment that is being expanded or collapsed
+
             setComments(prevComments => {
                 return prevComments.map(prevComment => {
                     if (prevComment.id === commentId) {
                         return {
                             ...prevComment,
-                            kids: kidsData.filter(kid => kid !== null) as HackerNewsComment[]
+                            kids: kidsData.filter(kid => kid !== null).map(kid => kid!.id)
                         };
                     }
                     return prevComment;
                 });
             });
-    
-            // Update expandedComments state based on whether the comment is being expanded or collapsed
+
+            setComments(prevComments => {
+                return [...prevComments, ...kidsData.filter(kid => kid !== null) as HackerNewsComment[]];
+            });
+
             setExpandedComments(prevExpandedComments => {
                 const isCurrentlyExpanded = isCommentExpanded(commentId);
                 if (isCurrentlyExpanded) {
-                    // If the comment is currently expanded, collapse it
                     return prevExpandedComments.filter(id => id !== commentId);
                 } else {
-                    // If the comment is not expanded, expand it
                     return [...prevExpandedComments, commentId];
                 }
             });
         }
     };
-    
-    
+
     const isCommentExpanded = (commentId: number) => {
         return expandedComments.includes(commentId);
     };
@@ -165,6 +158,7 @@ const AskComment = () => {
             return comment.text?.slice(0, 1000) ?? '';
         }
     };
+
     const renderComment = (comment: HackerNewsComment) => (
         <div key={comment.id} className=''>
             <div className='my-2'>
@@ -190,24 +184,19 @@ const AskComment = () => {
                 )}
             </div>
             {renderCommentActions(comment)}
-    
+
             <hr className='h-[2px] border-zinc-700 dark:border-zinc-600' />
-            
+
             {isCommentExpanded(comment.id) && comment.kids && (
                 <div className='border-l-2 border-zinc-500 pl-8'>
-                    {/* Panggil renderComments untuk menangani komentar-komentar anak */}
-                    {renderComments(comment.kids as HackerNewsComment[])}
+                    {comment.kids.map(kidId => {
+                        const kidComment = comments.find(c => c.id === kidId);
+                        return kidComment ? renderComment(kidComment) : null;
+                    })}
                 </div>
             )}
         </div>
     );
-    
-    const renderComments = (comments: HackerNewsComment[]) => (
-        <>
-            {comments.map(comment => renderComment(comment))}
-        </>
-    );    
-    
 
     if (loading) {
         return (
@@ -237,7 +226,7 @@ const AskComment = () => {
         <>
             <div className='flex-1 overflow-y-auto'>
                 <div className='pb-20 md:pb-2 lg:pb-2'>
-                    {renderComments(comments as HackerNewsComment[])}
+                    {comments.map(comment => renderComment(comment))}
                 </div>
             </div>
         </>
